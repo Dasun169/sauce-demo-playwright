@@ -1,0 +1,46 @@
+{
+  "name": "sauce-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test:chrome:headed": "npx playwright test --headed --project=chromium --grep",
+    "test:chrome:debug": "npx playwright test --debug --project=chromium --grep",
+    "test:chrome:ci": "npx playwright test --project=chromium --grep",
+    "test:firefox:headed": "npx playwright test --headed --project=firefox --grep",
+    "test:firefox:debug": "npx playwright test --debug --project=firefox --grep",
+    "test:firefox:ci": "npx playwright test --project=firefox --grep",
+    "test:webkit:headed": "npx playwright test --headed --project=webkit --grep",
+    "test:webkit:debug": "npx playwright test --debug --project=webkit --grep",
+    "test:webkit:ci": "npx playwright test --project=webkit --grep",
+    "test:mobile-chrome:headed": "npx playwright test --headed --project='Mobile Chrome' --grep",
+    "test:mobile-chrome:debug": "npx playwright test --debug --project='Mobile Chrome' --grep",
+    "test:mobile-chrome:ci": "npx playwright test --project='Mobile Chrome' --grep",
+    "test:mobile-safari:headed": "npx playwright test --headed --project='Mobile Safari' --grep",
+    "test:mobile-safari:debug": "npx playwright test --debug --project='Mobile Safari' --grep",
+    "test:mobile-safari:ci": "npx playwright test --project='Mobile Safari' --grep",
+    "test:edge:headed": "npx playwright test --headed --project='Microsoft Edge' --grep",
+    "test:edge:debug": "npx playwright test --debug --project='Microsoft Edge' --grep",
+    "test:edge:ci": "npx playwright test --project='Microsoft Edge' --grep",
+    "test:google-chrome:headed": "npx playwright test --headed --project='Google Chrome' --grep",
+    "test:google-chrome:debug": "npx playwright test --debug --project='Google Chrome' --grep",
+    "test:google-chrome:ci": "npx playwright test --project='Google Chrome' --grep",
+    "allure:clean": "rimraf reports/allure-report",
+    "allure:generate": "allure generate reports/allure-report/allure-results --clean -o reports/allure-report/html",
+    "allure:open": "allure open reports/allure-report/html",
+    "allure:serve": "allure serve reports/allure-report/allure-results"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0",
+    "allure-playwright": "^3.7.1",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.1",
+    "winston": "^3.19.0"
+  }
+}
