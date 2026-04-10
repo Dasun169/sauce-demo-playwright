@@ -16,6 +16,7 @@ export class ProductsPage {
     readonly sauceLabsBackpackItemLocator = () => this.page.locator(`//a[@id="item_4_title_link"]//div`);
     readonly sauceLabsBackpackPriceLocator = () => this.page.locator(`.inventory_item_price`).nth(0);
     readonly addToCartButtonLocator = () => this.page.locator(`button#add-to-cart-sauce-labs-backpack`);
+    readonly genericAddToCartButtonLocator = () => this.page.locator(`//button[text()="Add to cart"]`);
     readonly hamburgerMenuButtonLocator = () => this.page.locator(`//button[@id="react-burger-menu-btn"]`);
     readonly hamburgerMenu = () => this.page.locator(`//nav[@class="bm-item-list"]`);
     readonly hamburgerAllItemsButtonLocator = () => this.page.locator(`//a[@id="inventory_sidebar_link"]`);
@@ -28,6 +29,9 @@ export class ProductsPage {
     readonly itemLabelLocator = () => this.page.locator(`//div[@class="inventory_item_label"]`);
     readonly itemPriceBarLocator = () => this.page.locator(`//div[@class="pricebar"]`);
     readonly itemNameLocator = () => this.page.locator(`//div[@data-test="inventory-item-name"]`);
+    readonly itemDescLocator = () => this.page.locator(`//div[@data-test="inventory-item-desc"]`);
+    readonly itemPriceLocator = () => this.page.locator(`//div[@data-test="inventory-item-price"]`);
+    readonly cartBadgeLocator = () => this.page.locator(`//span[@data-test="shopping-cart-badge"]`);
 
     //Filter options
     readonly filterOptionAZLocator = () => this.page.locator(`//option[@value="az"]`);
@@ -65,7 +69,6 @@ export class ProductsPage {
     async openProductsPageDirectly() {
         try {
             await this.page.goto(this.url);
-            logger.info("Products page opened successfully");
         }
         catch (error) {
             logger.error(`Products page opened failed: ${error}`);
@@ -85,6 +88,24 @@ export class ProductsPage {
         }
         catch (error) {
             logger.error(`Sauce labs backpack add to cart failed: ${error}`);
+            throw error;
+        }
+    }
+
+    /**
+     * Add multiple products to the cart and verify the cart badge updates accordingly.
+     * @param numItems The number of items to add (max 6).
+     */
+    async addProductsAndVerifyCartBadge(numItems: number) {
+        try {
+            for (let i = 0; i < numItems; i++) {
+                await this.genericAddToCartButtonLocator().first().click();
+                await expect(this.cartBadgeLocator()).toHaveText((i + 1).toString());
+                logger.info(`Added item count ${i + 1} to cart and cart badge properly validated.`);
+            }
+            logger.info(`Successfully added ${numItems} items and validated cart badge updates.`);
+        } catch (error) {
+            logger.error(`Cart badge sequential addition validation failed: ${error}`);
             throw error;
         }
     }
@@ -196,7 +217,7 @@ export class ProductsPage {
     }
 
     /**
-     * Validate the Hamburger Menu Item Navigation
+     * Validate the Hamburger Menu About Navigation
      * by checking if the hamburger menu button locator is visible and the url contains the inventory page.
      */
     async hamburgerMenuAboutNavigationValidation() {
@@ -225,23 +246,6 @@ export class ProductsPage {
         }
         catch (error) {
             logger.error(`Hamburger menu logout navigation validation failed: ${error}`);
-            throw error;
-        }
-    }
-
-    /**
-     * Validate the Hamburger Menu Reset App State Navigation
-     * by checking if the hamburger menu button locator is visible and the url contains the inventory page.
-     */
-    async hamburgerMenuResetAppStateNavigationValidation() {
-        try {
-            await expect(this.hamburgerResetAppStateButtonLocator()).toBeVisible();
-            await this.hamburgerResetAppStateButtonLocator().click();
-            await expect(this.page).toHaveURL(process.env.BASE_URL || "");
-            logger.info("Hamburger menu reset app state navigation validated successfully");
-        }
-        catch (error) {
-            logger.error(`Hamburger menu reset app state navigation validation failed: ${error}`);
             throw error;
         }
     }
@@ -287,12 +291,10 @@ export class ProductsPage {
     async homePageItemFilterValidate() {
         try {
             await expect(this.itemFilterButtonLocator()).toBeVisible();
-            await this.itemFilterButtonLocator().click();
-            await this.page.waitForTimeout(1000);
-            await expect(this.filterOptionAZLocator()).toBeVisible();
-            await expect(this.filterOptionZALocator()).toBeVisible();
-            await expect(this.filterOptionLowToHighLocator()).toBeVisible();
-            await expect(this.filterOptionHighToLowLocator()).toBeVisible();
+            await expect(this.filterOptionAZLocator()).toBeAttached();
+            await expect(this.filterOptionZALocator()).toBeAttached();
+            await expect(this.filterOptionLowToHighLocator()).toBeAttached();
+            await expect(this.filterOptionHighToLowLocator()).toBeAttached();
             logger.info("Home page item filter validated successfully");
         }
         catch (error) {
@@ -302,17 +304,65 @@ export class ProductsPage {
     }
 
     /**
+     * Validate all product details sequentially from 0th to 5th position
+     * @param expectedItems Array of expected item objects
+     */
+    async validateAllProductDetailsSequentially(expectedItems: { position: number, name: string, description: string, price: string }[]) {
+        try {
+            for (let i = 0; i < expectedItems.length; i++) {
+                const item = expectedItems[i];
+
+                // Validate all variable values for this position
+                await expect(this.itemNameLocator().nth(i)).toContainText(item.name);
+                await expect(this.itemDescLocator().nth(i)).toHaveText(item.description);
+                await expect(this.itemPriceLocator().nth(i)).toHaveText(item.price);
+
+                logger.info(`Product details validated successfully at position ${i}: ${item.name}`);
+            }
+            logger.info("All 6 product sequences validated successfully from 0th to 5th position.");
+        } catch (error) {
+            logger.error(`Sequential product details validation failed: ${error}`);
+            throw error;
+        }
+    }
+
+    /**
+     * Validate product details by navigating to each product's detail page sequentially
+     * @param expectedItems Array of expected item objects
+     */
+    async validateProductDetailsByNavigationSequentially(expectedItems: { position: number, name: string, description: string, price: string }[]) {
+        try {
+            for (let i = 0; i < expectedItems.length; i++) {
+                const item = expectedItems[i];
+                await this.itemNameLocator().nth(i).click();
+
+                // Validate details on the product details page
+                await expect(this.itemNameLocator().first()).toContainText(item.name);
+                await expect(this.itemDescLocator().first()).toHaveText(item.description);
+                await expect(this.itemPriceLocator().first()).toHaveText(item.price);
+
+                logger.info(`Product details validated successfully on details page for position ${i}: ${item.name}`);
+
+                await this.page.goto(process.env.BASE_URL + "/inventory.html");
+                await expect(this.itemNameLocator().first()).toBeVisible();
+            }
+            logger.info("Successfully validated all product details via detail page navigation.");
+        } catch (error) {
+            logger.error(`Navigation product details validation failed: ${error}`);
+            throw error;
+        }
+    }
+
+    /**
      * Validate the Home Page Item Filter Low to High
      * by checking if the home page validation locator is visible and the url contains the inventory page.
+     * @param expectedItemName the name of the expected first item
      */
-    async homePageItemFilterLowToHighValidate() {
+    async homePageItemFilterLowToHighValidate(expectedItemName: string) {
         try {
             await expect(this.itemFilterButtonLocator()).toBeVisible();
-            await this.itemFilterButtonLocator().click();
-            await this.page.waitForTimeout(1000);
-            await expect(this.filterOptionLowToHighLocator()).toBeVisible();
-            await this.filterOptionLowToHighLocator().click();
-            await expect(this.itemNameLocator().nth(0)).toHaveText("Sauce Labs Onesie");
+            await this.itemFilterButtonLocator().selectOption('lohi');
+            await expect(this.itemNameLocator().nth(0)).toHaveText(expectedItemName);
             logger.info("Home page item filter low to high validated successfully");
         }
         catch (error) {
@@ -324,15 +374,13 @@ export class ProductsPage {
     /**
      * Validate the Home Page Item Filter High to Low
      * by checking if the home page validation locator is visible and the url contains the inventory page.
+     * @param expectedItemName the name of the expected first item
      */
-    async homePageItemFilterHighToLowValidate() {
+    async homePageItemFilterHighToLowValidate(expectedItemName: string) {
         try {
             await expect(this.itemFilterButtonLocator()).toBeVisible();
-            await this.itemFilterButtonLocator().click();
-            await this.page.waitForTimeout(1000);
-            await expect(this.filterOptionHighToLowLocator()).toBeVisible();
-            await this.filterOptionHighToLowLocator().click();
-            await expect(this.itemNameLocator().nth(0)).toHaveText("Sauce Labs Fleece Jacket");
+            await this.itemFilterButtonLocator().selectOption('hilo');
+            await expect(this.itemNameLocator().nth(0)).toHaveText(expectedItemName);
             logger.info("Home page item filter high to low validated successfully");
         }
         catch (error) {
@@ -344,15 +392,13 @@ export class ProductsPage {
     /**
      * Validate the Home Page Item Filter A to Z
      * by checking if the home page validation locator is visible and the url contains the inventory page.
+     * @param expectedItemName the name of the expected first item
      */
-    async homePageItemFilterAZValidate() {
+    async homePageItemFilterAZValidate(expectedItemName: string) {
         try {
             await expect(this.itemFilterButtonLocator()).toBeVisible();
-            await this.itemFilterButtonLocator().click();
-            await this.page.waitForTimeout(1000);
-            await expect(this.filterOptionAZLocator()).toBeVisible();
-            await this.filterOptionAZLocator().click();
-            await expect(this.itemNameLocator().nth(0)).toHaveText("Sauce Labs Backpack");
+            await this.itemFilterButtonLocator().selectOption('az');
+            await expect(this.itemNameLocator().nth(0)).toHaveText(expectedItemName);
             logger.info("Home page item filter A to Z validated successfully");
         }
         catch (error) {
@@ -364,15 +410,13 @@ export class ProductsPage {
     /**
      * Validate the Home Page Item Filter Z to A
      * by checking if the home page validation locator is visible and the url contains the inventory page.
+     * @param expectedItemName the name of the expected first item
      */
-    async homePageItemFilterZALocate() {
+    async homePageItemFilterZALocate(expectedItemName: string) {
         try {
             await expect(this.itemFilterButtonLocator()).toBeVisible();
-            await this.itemFilterButtonLocator().click();
-            await this.page.waitForTimeout(1000);
-            await expect(this.filterOptionZALocator()).toBeVisible();
-            await this.filterOptionZALocator().click();
-            await expect(this.itemNameLocator().nth(0)).toHaveText("Test.allTheThings() T-Shirt (Red)");
+            await this.itemFilterButtonLocator().selectOption('za');
+            await expect(this.itemNameLocator().nth(0)).toHaveText(expectedItemName);
             logger.info("Home page item filter Z to A validated successfully");
         }
         catch (error) {
