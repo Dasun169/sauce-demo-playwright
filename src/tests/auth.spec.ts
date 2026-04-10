@@ -2,7 +2,7 @@ import { test } from '../../fixtures/fixture';
 import { authData } from '../test-data/authData';
 import { logger } from '../utils/Logger';
 
-test.describe('Authentication Form Validation Tests', { tag: ['@regression', '@sanity'] }, () => {
+test.describe('Authentication Form Validation Tests', { tag: ['@regression', '@auth'] }, () => {
 
     test.beforeEach(async ({ loginPage }) => {
         logger.info("----------------------------------------------------------");
