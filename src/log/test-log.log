@@ -1,0 +1,42 @@
+2026-04-11 00:36:47 info: ----------------------------------------------------------
+2026-04-11 00:36:49 info: Starting Test: TC_AUTH_001 - Should login successfully with valid credentials
+2026-04-11 00:36:49 info: Credentials filled and login button clicked
+2026-04-11 00:36:49 info: Successful login validated successfully
+2026-04-11 00:36:50 info: Products page validated successfully
+2026-04-11 00:36:50 info: ----------------------------------------------------------
+2026-04-11 00:36:52 info: Starting Test: TC_AUTH_002 - Should login successfully with valid credentials
+2026-04-11 00:36:52 info: Credentials filled and login button clicked
+2026-04-11 00:36:52 info: Successful login validated successfully
+2026-04-11 00:36:52 info: Products page validated successfully
+2026-04-11 00:36:53 info: ----------------------------------------------------------
+2026-04-11 00:36:54 info: Starting Test: TC_AUTH_003 - Should login successfully with valid credentials
+2026-04-11 00:36:59 info: Credentials filled and login button clicked
+2026-04-11 00:36:59 info: Successful login validated successfully
+2026-04-11 00:36:59 info: Products page validated successfully
+2026-04-11 00:37:00 info: ----------------------------------------------------------
+2026-04-11 00:37:01 info: Starting Test: TC_AUTH_004 - Should logout successfully
+2026-04-11 00:37:01 info: Credentials filled and login button clicked
+2026-04-11 00:37:01 info: Successful login validated successfully
+2026-04-11 00:37:01 info: Products page validated successfully
+2026-04-11 00:37:01 info: Hamburger menu validated successfully
+2026-04-11 00:37:02 info: Hamburger menu logout navigation validated successfully
+2026-04-11 00:37:03 info: ----------------------------------------------------------
+2026-04-11 00:37:05 info: Starting Test: TC_AUTH_005 - Should show error for locked out user
+2026-04-11 00:37:05 info: Credentials filled and login button clicked
+2026-04-11 00:37:05 info: Error-message validated successfully
+2026-04-11 00:37:05 info: ----------------------------------------------------------
+2026-04-11 00:37:06 info: Starting Test: TC_AUTH_006 - Should show error for invalid username/password
+2026-04-11 00:37:07 info: Credentials filled and login button clicked
+2026-04-11 00:37:07 info: Error-message validated successfully
+2026-04-11 00:37:07 info: ----------------------------------------------------------
+2026-04-11 00:37:08 info: Starting Test: TC_AUTH_007 - Should show error when username is empty
+2026-04-11 00:37:08 info: Credentials filled and login button clicked
+2026-04-11 00:37:08 info: Error-message validated successfully
+2026-04-11 00:37:09 info: ----------------------------------------------------------
+2026-04-11 00:37:10 info: Starting Test: TC_AUTH_008 - Should show error when password is empty
+2026-04-11 00:37:10 info: Credentials filled and login button clicked
+2026-04-11 00:37:10 info: Error-message validated successfully
+2026-04-11 00:37:11 info: ----------------------------------------------------------
+2026-04-11 00:37:12 info: Starting Test: TC_AUTH_009 - Should show error when both fields are empty
+2026-04-11 00:37:12 info: Credentials filled and login button clicked
+2026-04-11 00:37:12 info: Error-message validated successfully
