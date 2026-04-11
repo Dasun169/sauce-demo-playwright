@@ -9,6 +9,8 @@ dotenv.config({
 
 export default defineConfig({
   testDir: "./src/tests",
+  snapshotDir: './src/utils/images',
+  snapshotPathTemplate: '{snapshotDir}/{testFileName}/{arg}{ext}',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

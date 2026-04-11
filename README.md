@@ -98,8 +98,10 @@ sauceDemo/
 │   ├── pages/              # Page Object Model (Locators & Actions)
 │   ├── test-data/          # TypeScript-based DDT data files
 │   ├── tests/              # Spec files (Auth, Cart, Checkout, etc.)
-│   └── utils/              # Custom Loggers and helper functions
-├── playwright.config.ts    # Main Playwright configuration
+│   └── utils/              
+│       ├── images/         # Storage for Visual baseline snapshots
+│       └── Logger.ts       # Custom logging utility
+├── playwright.config.ts    # Main Playwright configuration (includes Snapshot settings)
 └── Dockerfile              # Containerization setup for CI/CD
 ```
 
@@ -110,6 +112,8 @@ sauceDemo/
 *   **Data-Driven**: Parameterized loops covering 100% of negative form validation scenarios.
 *   **Network Intelligence**: protocol-level mocking of HTTP 500/404 errors and CSS-injection testing.
 *   **Cross-Device**: Mobile-specific touch-interaction testing on Pixel/iPhone viewports.
+*   **Visual Regression**: Automated pixel-comparison tests for branding consistency (Stored in `src/utils/images`).
+*   **Performance Benchmarking**: Integrated W3C Navigation timing and Custom Performance Budgets (Logins < 3s).
 
 **Current Limitations (Strategic Debt):**
 *   **Environment Dependency**: The suite currently targets the production demo environment directly. To maximize CI/CD stability, the next phase would move to **Mocked Service Workers (MSW)** to decouple tests from external uptime.
@@ -125,8 +129,6 @@ sauceDemo/
 ---
 
 ## 🔮 Roadmap & Technical Maturity
-*   **Visual Regression (Pixel-Perfect)**: Integration of **Playwright Snapshots** or **Applitools** to catch CSS regressions that locators miss.
 *   **Accessibility (A11y)**: Integration of `@axe-core/playwright` to automate WCAG compliance checks on every page load.
 *   **Contract Testing**: Implementing API contract validation to ensure the UI remains compatible with evolving backend schemas.
 *   **GitOps/Husky**: Implementing `Husky` pre-commit hooks to run linting and "smoke" tags locally before code pushes to ensure 0% main-branch breakage.
-
