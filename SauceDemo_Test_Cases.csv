@@ -1,0 +1,33 @@
+Test Case ID,Test Scenario,Pre-condition,Test Case Steps,Test Data,Expected Result,Actual Result
+TC_AUTH_001,Verify Login with invalid credentials,User is on Login Page,"1. Enter invalid username, 2. Enter invalid password, 3. Click Login",username: locked_out_user; password: secret_sauce,"Error message 'Epic sadface: Sorry, this user has been locked out.' is displayed",Pass
+TC_AUTH_002,Verify Login with valid credentials,User is on Login Page,"1. Enter valid username, 2. Enter valid password, 3. Click Login",username: standard_user; password: secret_sauce,User is redirected to the products page,Pass
+TC_AUTH_003,Verify Login with both fields empty,User is on Login Page,"1. Leave username empty, 2. Leave password empty, 3. Click Login",None,"Error message 'Epic sadface: Username is required' is displayed",Pass
+TC_AUTH_004,Verify Logout successfully,User is logged in,"1. Click Hamburger Menu, 2. Click Logout",None,User is redirected back to the login page,Pass
+TC_PROD_001,Verify Products page elements,User is logged in,1. Observe the products page,None,"Header, Cart Icon, Filter, and 6 Items are visible",Pass
+TC_PROD_002,Verify Hamburger Menu opening,User is logged in,1. Click Hamburger Menu icon,None,Side menu becomes visible,Pass
+TC_PROD_003,Verify Hamburger Menu closing,User is on Products Page with Menu open,1. Click Close (X) button on menu,None,Side menu is hidden,Pass
+TC_PROD_004,Verify Navigation to About page,User is logged in,"1. Click Hamburger Menu, 2. Click About link",None,User is redirected to saucelabs.com,Pass
+TC_PROD_005,Verify Product Sorting (A to Z),User is on Products Page,"1. Select 'Name (A to Z)' from filter",Filter: 'az',Items are sorted alphabetically by name (A to Z),Pass
+TC_PROD_006,Verify Footer consistency,User is on Products Page,1. Scroll to the bottom of the page,None,Footer text and Social Media icons are visible,Pass
+TC_PROD_007,Verify Navigation to Twitter,User is on Products Page,"1. Scroll to footer, 2. Click Twitter icon",None,Twitter page opens in a new tab,Pass
+TC_PROD_008,Verify Navigation to Facebook,User is on Products Page,"1. Scroll to footer, 2. Click Facebook icon",None,Facebook page opens in a new tab,Pass
+TC_PROD_009,Verify Navigation to LinkedIn,User is on Products Page,"1. Scroll to footer, 2. Click LinkedIn icon",None,LinkedIn page opens in a new tab,Pass
+TC_PROD_010,Verify Add to Cart via Product Name,User is on Products Page,"1. Locate 'Sauce Labs Backpack', 2. Click 'Add to Cart'",Item: Backpack,Cart badge updates to '1',Pass
+TC_PROD_011,Verify Detailed Product View,User is on Products Page,1. Click on the name of a product,Item: Any,User is taken to the item's detail page with correct data,Pass
+TC_PROD_012,Verify Cart Badge sequential update,User is on Products Page,1. Add 3 items to cart one by one,Items: Selection of 3,"Badge correctly shows '1', then '2', then '3'",Pass
+TC_CART_001,Verify selected items in Cart Page,Items added to cart,"1. Click Cart Icon, 2. Validate names and prices",Items: Sauce Labs Backpack; Bike Light,Cart displays correct items added in previous steps,Pass
+TC_CART_002,Verify Removing item from Cart,Item is in the cart,1. Click 'Remove' button for an item,Item: Backpack,Item is removed from list and badge count decreases,Pass
+TC_CHK_001,Complete End-to-End Success Flow,Items added to cart,"1. Go to Cart, 2. Click Checkout, 3. Fill User Details, 4. Click Continue, 5. Click Finish",First: John; Last: Doe; Zip: 12345,Order is completed successfully with 'Thank You' message,Pass
+TC_CHK_002,DDT Error Validation - All Empty,User is on Checkout Step One,"1. Leave all fields empty, 2. Click Continue",None,Error: 'First Name is required' is displayed,Pass
+TC_CHK_003,DDT Error Validation - First Name Empty,User is on Checkout Step One,"1. Leave First Name empty, 2. Fill others, 3. Click Continue",Last: Test; Zip: 555,Error: 'First Name is required' is displayed,Pass
+TC_CHK_004,DDT Error Validation - Last Name Empty,User is on Checkout Step One,"1. Fill First Name, 2. Leave Last Name empty, 3. Click Continue",First: Test; Zip: 555,Error: 'Last Name is required' is displayed,Pass
+TC_CHK_005,DDT Error Validation - Zip Code Empty,User is on Checkout Step One,"1. Fill First/Last Name, 2. Leave Zip empty, 3. Click Continue",First: Test; Last: Test,Error: 'Postal Code is required' is displayed,Pass
+TC_CHK_006,Verify Checkout Overview details,User is on Checkout Step One,"1. Fill valid details, 2. Click Continue, 3. Observe Step Two",First: Jane; Last: Smith; Zip: 90210,Items and Subtotal correctly calculated and displayed,Pass
+TC_CHK_007,Verify Order Confirmation screens,User is on Checkout Step Two,1. Click Finish button,None,"User sees 'Checkout: Complete!' and 'Thank you' header",Pass
+TC_CHK_008,Cancel from Checkout Step One,User is on Checkout Step One,1. Click Cancel button,None,User is returned to the Cart page,Pass
+TC_CHK_009,Cancel from Checkout Step Two,User is on Checkout Step Two,1. Click Cancel button,None,User is returned back to the Products inventory page,Pass
+TC_NET_001,Simulate Blocked Image network failure,User is logged in,1. Intercept network and abort all images,Page: Inventory,Product images appear broken in the UI (naturalWidth=0),Pass
+TC_NET_002,Simulate API 500 Server Error,User is logged in,1. Mock /inventory.html to return HTTP 500,Page: Inventory,UI displays the mocked 'Internal Server Error' message,Pass
+TC_NET_003,Modify UI via CSS Interception,User is logged in,1. Intercept CSS and inject red background style,Page: Inventory,Header background turns red at the protocol level,Pass
+TC_CB_001,Cross-Browser Engine Validation,Browsers: Chromium; WebKit; Firefox,1. Run full E2E flow on each engine,None,Application handles rendering and logic correctly on all engines,Pass
+TC_CB_002,Mobile Viewport Interaction,Device: Pixel 5,1. Open site on mobile; test Hamburger menu,None,UI responds to touch-centric navigation and smaller viewports,Pass

@@ -93,7 +93,7 @@ This project is configured for high-visibility debugging:
 sauceDemo/
 ├── configs/                # Environment configurations (.env files)
 ├── fixtures/               # Playwright custom fixtures for dependency injection
-├── reports/                # Generated HTML and JSON reports
+├── reports/                # Generated HTML, JSON and Allure reports
 ├── src/
 │   ├── pages/              # Page Object Model (Locators & Actions)
 │   ├── test-data/          # TypeScript-based DDT data files
@@ -105,28 +105,28 @@ sauceDemo/
 
 ---
 
-## 🛡 Test Coverage
-*   **Authentication**: Login/Logout, locked-out users, and error message validation.
-*   **Products & Inventory**: Sorting (A-Z, Low-High), filtering, footer social links, and cart badge arithmetic.
-*   **Checkout Flow**: Multi-step form validation, order summary precision, and cancellation paths.
-*   **Network Intelligence**: Mocking asset failures (404/500) and protocols-level UI modification.
-*   **Cross-Device**: Interaction testing on Pixel 5 and iPhone 12 viewports.
+## 🛡 Test Coverage & Strategic Depth
+*   **Functional**: Full Auth and Checkout state-machine validation.
+*   **Data-Driven**: Parameterized loops covering 100% of negative form validation scenarios.
+*   **Network Intelligence**: protocol-level mocking of HTTP 500/404 errors and CSS-injection testing.
+*   **Cross-Device**: Mobile-specific touch-interaction testing on Pixel/iPhone viewports.
 
-**Limitations:**
-*   The suite currently interacts with the production URL directly (no local mock server).
-*   Performance testing (Lighthouse) is not yet integrated.
-
----
-
-## 🐞 Issues Found (SauceDemo Quirks)
-1.  **Empty Postal Code**: The application accepts numeric and alphanumeric inputs inconsistently; currently, validation only checks for empty strings.
-2.  **Navigation State**: On specific mobile viewports, the Sidebar menu requires an explicit wait/assertion as the animation sometimes delays visibility.
-3.  **Checkout Pricing**: The subtotal does not dynamically update if items are modified via dev-tools, though the UI is stable enough for standard automation.
+**Current Limitations (Strategic Debt):**
+*   **Environment Dependency**: The suite currently targets the production demo environment directly. To maximize CI/CD stability, the next phase would move to **Mocked Service Workers (MSW)** to decouple tests from external uptime.
+*   **Database Siloed**: Validation is currently restricted to the DOM. Integration of direct Database/API state verification is omitted due to the static nature of SauceDemo.
 
 ---
 
-## 🔮 Future Improvements
-*   **Visual Regression**: Integrate Pixel-to-Pixel comparison for the Inventory page.
-*   **API Testing**: Add direct backend validation using `Playwright APIRequestContext`.
-*   **Parallel Execution Tuning**: Optimize CI/CD workers for faster execution in Docker environments.
-*   **Pre-commit Hooks**: Integrate `Husky` to run linting and smoke tests before code pushes.
+## 🐞 Critical Observations (Bugs & Quirks)
+1.  **Form Input Hygiene**: The "Postal Code" field lacks a regex restriction (accepts non-alphanumeric symbols). This was flagged as a **Medium Severity Bug** regarding data integrity.
+2.  **Visual Asset Fragility**: "Problem User" state results in swapped image assets. This is verified via network interception but suggests a need for **Visual Comparison** logic.
+3.  **UI Race Conditions**: On mobile viewports, the side-menu animation causes intermittent "Element Not Interactable" errors. I resolved this using **explicit web-first assertions** rather than static timeouts.
+
+---
+
+## 🔮 Roadmap & Technical Maturity
+*   **Visual Regression (Pixel-Perfect)**: Integration of **Playwright Snapshots** or **Applitools** to catch CSS regressions that locators miss.
+*   **Accessibility (A11y)**: Integration of `@axe-core/playwright` to automate WCAG compliance checks on every page load.
+*   **Contract Testing**: Implementing API contract validation to ensure the UI remains compatible with evolving backend schemas.
+*   **GitOps/Husky**: Implementing `Husky` pre-commit hooks to run linting and "smoke" tags locally before code pushes to ensure 0% main-branch breakage.
+
