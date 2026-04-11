@@ -54,46 +54,35 @@ test.describe('Checkout Flow Tests', { tag: ['@regression', '@checkout'] }, () =
         await productsPage.validateProductsPage();
     });
 
-    // 2. Required field validation for all error combinations explicitly defined
-    test('TC_CHK_002 - Should strictly validate required fields and error messages on user form', async ({ checkoutStepOnePage }) => {
-        logger.info("Starting Test: TC_CHK_002 - Should strictly validate required fields and error messages on user form");
+    // 2. Parameterized Required field validation
+    // This loop creates 4 distinct tests (TC_CHK_002 - TC_CHK_005)
+    const validationScenarios = [
+        { id: '002', label: 'All Empty', data: checkoutData.invalidUsers.allEmpty },
+        { id: '003', label: 'First Name Empty', data: checkoutData.invalidUsers.firstNameEmpty },
+        { id: '004', label: 'Last Name Empty', data: checkoutData.invalidUsers.lastNameEmpty },
+        { id: '005', label: 'Postal Code Empty', data: checkoutData.invalidUsers.postalCodeEmpty }
+    ];
 
-        // Scenario 1: All empty fields explicitly triggered
-        await checkoutStepOnePage.validateCheckoutErrorMessage(
-            checkoutData.invalidUsers.allEmpty.firstName,
-            checkoutData.invalidUsers.allEmpty.lastName,
-            checkoutData.invalidUsers.allEmpty.postalCode,
-            checkoutData.invalidUsers.allEmpty.errorMessage
-        );
-
-        // Scenario 2: First name is inherently empty
-        await checkoutStepOnePage.validateCheckoutErrorMessage(
-            checkoutData.invalidUsers.firstNameEmpty.firstName,
-            checkoutData.invalidUsers.firstNameEmpty.lastName,
-            checkoutData.invalidUsers.firstNameEmpty.postalCode,
-            checkoutData.invalidUsers.firstNameEmpty.errorMessage
-        );
-
-        // Scenario 3: Last name explicitly omitted
-        await checkoutStepOnePage.validateCheckoutErrorMessage(
-            checkoutData.invalidUsers.lastNameEmpty.firstName,
-            checkoutData.invalidUsers.lastNameEmpty.lastName,
-            checkoutData.invalidUsers.lastNameEmpty.postalCode,
-            checkoutData.invalidUsers.lastNameEmpty.errorMessage
-        );
-
-        // Scenario 4: Postal code purposefully omitted
-        await checkoutStepOnePage.validateCheckoutErrorMessage(
-            checkoutData.invalidUsers.postalCodeEmpty.firstName,
-            checkoutData.invalidUsers.postalCodeEmpty.lastName,
-            checkoutData.invalidUsers.postalCodeEmpty.postalCode,
-            checkoutData.invalidUsers.postalCodeEmpty.errorMessage
-        );
-    });
+    for (const scenario of validationScenarios) {
+        test(`TC_CHK_${scenario.id} - Should validate error for ${scenario.label}`, async ({ checkoutStepOnePage }, testInfo) => {
+            testInfo.annotations.push({
+                type: 'Data-Driven Validation',
+                description: `Scenario: ${scenario.label} | Expected Error: ${scenario.data.errorMessage}`
+            });
+            
+            logger.info(`Starting Test Scenario: TC_CHK_${scenario.id} - ${scenario.label}`);
+            await checkoutStepOnePage.validateCheckoutErrorMessage(
+                scenario.data.firstName,
+                scenario.data.lastName,
+                scenario.data.postalCode,
+                scenario.data.errorMessage
+            );
+        });
+    }
 
     // 3. Verify checkout overview details before completion
-    test('TC_CHK_003 - Should securely verify checkout overview details on step two before completion', async ({ checkoutStepOnePage, checkoutStepTwoPage }) => {
-        logger.info("Starting Test: TC_CHK_003 - Should securely verify checkout overview details on step two before completion");
+    test('TC_CHK_006 - Should securely verify checkout overview details on step two before completion', async ({ checkoutStepOnePage, checkoutStepTwoPage }) => {
+        logger.info("Starting Test: TC_CHK_006 - Should securely verify checkout overview details on step two before completion");
 
         await checkoutStepOnePage.fillUserDetails(
             checkoutData.validUser2.firstName,
@@ -116,8 +105,8 @@ test.describe('Checkout Flow Tests', { tag: ['@regression', '@checkout'] }, () =
     });
 
     // 4. Verify successful order confirmation
-    test('TC_CHK_004 - Should reliably assert successful order confirmation payload screens', async ({ checkoutStepOnePage, checkoutStepTwoPage, checkoutComplete }) => {
-        logger.info("Starting Test: TC_CHK_004 - Should reliably assert successful order confirmation payload screens");
+    test('TC_CHK_007 - Should reliably assert successful order confirmation payload screens', async ({ checkoutStepOnePage, checkoutStepTwoPage, checkoutComplete }) => {
+        logger.info("Starting Test: TC_CHK_007 - Should reliably assert successful order confirmation payload screens");
 
         // Quickly push to confirmation state securely
         await checkoutStepOnePage.fillUserDetails(
@@ -133,16 +122,16 @@ test.describe('Checkout Flow Tests', { tag: ['@regression', '@checkout'] }, () =
     });
 
     // 5. Verify checkout cancellation behavior gracefully handling returns accurately from step one
-    test('TC_CHK_005 - Should accurately handle checkout flow cancellation from step one safely returning to cart page', async ({ cartPage, checkoutStepOnePage }) => {
-        logger.info("Starting Test: TC_CHK_005 - Should accurately handle checkout flow cancellation from step one safely returning to cart page");
+    test('TC_CHK_008 - Should accurately handle checkout flow cancellation from step one safely returning to cart page', async ({ cartPage, checkoutStepOnePage }) => {
+        logger.info("Starting Test: TC_CHK_008 - Should accurately handle checkout flow cancellation from step one safely returning to cart page");
 
         await checkoutStepOnePage.clickCancelButton();
         await cartPage.validateCartPage();
     });
 
     // 6. Verify checkout cancellation behavior gracefully handling returns accurately from step two
-    test('TC_CHK_006 - Should reliably handle checkout flow cancellation from step two navigating clearly back to products page', async ({ productsPage, checkoutStepOnePage, checkoutStepTwoPage }) => {
-        logger.info("Starting Test: TC_CHK_006 - Should reliably handle checkout flow cancellation from step two navigating clearly back to products page");
+    test('TC_CHK_009 - Should reliably handle checkout flow cancellation from step two navigating clearly back to products page', async ({ productsPage, checkoutStepOnePage, checkoutStepTwoPage }) => {
+        logger.info("Starting Test: TC_CHK_009 - Should reliably handle checkout flow cancellation from step two navigating clearly back to products page");
 
         // Fills User information to progress towards step two securely iteratively
         await checkoutStepOnePage.fillUserDetails(
