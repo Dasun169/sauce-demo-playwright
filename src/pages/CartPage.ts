@@ -11,12 +11,12 @@ export class CartPage {
     readonly url = process.env.BASE_URL + 'cart.html';
 
     //Locators
-    readonly cartPageValidationLocator = () => this.page.locator(`span.title`);
-    readonly cartItemCatchLocator = () => this.page.locator(`//div[@class="cart_item"]`);
-    readonly itemNameLocator = () => this.page.locator(`div.inventory_item_name`);
-    readonly itemPriceLocator = () => this.page.locator(`div.inventory_item_price`);
+    readonly cartPageValidationLocator = () => this.page.locator(`//span[@data-test="title"]`);
+    readonly cartItemCatchLocator = () => this.page.locator(`//div[@data-test="inventory-item"]`);
+    readonly itemNameLocator = () => this.page.locator(`//div[@data-test="inventory-item-name"]`);
+    readonly itemPriceLocator = () => this.page.locator(`//div[@data-test="inventory-item-price"]`);
     readonly itemRemoveButtonLocator = () => this.page.locator(`//button[@data-test="remove-sauce-labs-backpack"]`);
-    readonly checkoutButtonLocator = () => this.page.locator(`button#checkout`);
+    readonly checkoutButtonLocator = () => this.page.locator(`//button[@data-test="checkout"]`);
     readonly continueShoppingButtonLocator = () => this.page.locator(`//button[@data-test="continue-shopping"]`);
     readonly cartBadgeLocator = () => this.page.locator(`//span[@data-test="shopping-cart-badge"]`);
     readonly genericRemoveButtonLocator = () => this.page.locator(`//button[text()="Remove"]`);

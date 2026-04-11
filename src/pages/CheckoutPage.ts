@@ -12,10 +12,10 @@ export class CheckoutStepOnePage {
 
     //Locators
     readonly checkoutStepOnePageValidationLocator = () => this.page.locator(`//span[@data-test="title"]`);
-    readonly firstNameLocator = () => this.page.locator(`//input[@id="first-name"]`);
-    readonly lastNameLocator = () => this.page.locator(`//input[@id="last-name"]`);
-    readonly postalCodeLocator = () => this.page.locator(`//input[@id="postal-code"]`);
-    readonly continueButtonLocator = () => this.page.locator(`//input[@id="continue"]`);
+    readonly firstNameLocator = () => this.page.locator(`//input[@data-test="firstName"]`);
+    readonly lastNameLocator = () => this.page.locator(`//input[@data-test="lastName"]`);
+    readonly postalCodeLocator = () => this.page.locator(`//input[@data-test="postalCode"]`);
+    readonly continueButtonLocator = () => this.page.locator(`//input[@data-test="continue"]`);
     readonly cancelButtonLocator = () => this.page.locator(`//button[@data-test="cancel"]`);
     readonly errorMessageLocator = () => this.page.locator(`//h3[@data-test="error"]`);
 
@@ -151,10 +151,10 @@ export class CheckoutStepTwoPage {
 
     //Locators
     readonly checkoutStepTwoPageValidationLocator = () => this.page.locator(`//span[@data-test="title"]`);
-    readonly itemNameLocator = () => this.page.locator(`//div[@class="inventory_item_name"]`);
-    readonly itemPriceLocator = () => this.page.locator(`//div[@class="inventory_item_price"]`);
-    readonly itemQuantityLocator = () => this.page.locator(`//div[@class="cart_quantity"]`);
-    readonly finishButtonLocator = () => this.page.locator(`//button[@id="finish"]`);
+    readonly itemNameLocator = () => this.page.locator(`//div[@data-test="inventory-item-name"]`);
+    readonly itemPriceLocator = () => this.page.locator(`//div[@data-test="inventory-item-price"]`);
+    readonly itemQuantityLocator = () => this.page.locator(`//div[@data-test="item-quantity"]`);
+    readonly finishButtonLocator = () => this.page.locator(`//button[@data-test="finish"]`);
     readonly cancelButtonLocator = () => this.page.locator(`//button[@data-test="cancel"]`);
 
     readonly paymentInformationLocator = () => this.page.locator(`//div[@data-test="payment-info-label"]`);
@@ -292,7 +292,7 @@ export class CheckoutComplete {
 
     //Locators
     readonly checkoutCompletePageValidationLocator = () => this.page.locator(`//span[@data-test="title"]`);
-    readonly backToHomeButtonLocator = () => this.page.locator(`//button[@id="back-to-products"]`);
+    readonly backToHomeButtonLocator = () => this.page.locator(`//button[@data-test="back-to-products"]`);
     readonly thankYouMessageLocator = () => this.page.locator(`//h2[@data-test="complete-header"]`);
     readonly completeTextMessageLocator = () => this.page.locator(`//div[@data-test="complete-text"]`);
 

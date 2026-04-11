@@ -9,9 +9,9 @@ export class LoginPage {
     }
 
     //Locators
-    readonly userNameInputLocator = () => this.page.locator(`[data-test="username"]`);
-    readonly passwordInputLocator = () => this.page.locator(`[data-test="password"]`);
-    readonly loginButtonLocator = () => this.page.locator(`[data-test="login-button"]`);
+    readonly userNameInputLocator = () => this.page.locator(`//input[@data-test="username"]`);
+    readonly passwordInputLocator = () => this.page.locator(`//input[@data-test="password"]`);
+    readonly loginButtonLocator = () => this.page.locator(`//input[@data-test="login-button"]`);
     readonly errorMessageLocator = () => this.page.locator(`//h3[@data-test="error"]`);
 
     //Methods

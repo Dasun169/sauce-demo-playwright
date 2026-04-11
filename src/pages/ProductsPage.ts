@@ -11,18 +11,18 @@ export class ProductsPage {
     readonly url = process.env.BASE_URL + "inventory.html";
 
     //Locators
-    readonly homePageValidationLocator = () => this.page.locator(`span.title`);
-    readonly cartIconLocator = () => this.page.locator(`//div[@id="shopping_cart_container"]`);
-    readonly sauceLabsBackpackItemLocator = () => this.page.locator(`//a[@id="item_4_title_link"]//div`);
-    readonly sauceLabsBackpackPriceLocator = () => this.page.locator(`.inventory_item_price`).nth(0);
-    readonly addToCartButtonLocator = () => this.page.locator(`button#add-to-cart-sauce-labs-backpack`);
+    readonly homePageValidationLocator = () => this.page.locator(`//span[@data-test="title"]`);
+    readonly cartIconLocator = () => this.page.locator(`//a[@data-test="shopping-cart-link"]/parent::div`);
+    readonly sauceLabsBackpackItemLocator = () => this.page.locator(`//a[@data-test="item-4-title-link"]//div`);
+    readonly sauceLabsBackpackPriceLocator = () => this.page.locator(`(//div[@data-test="inventory-item-price"])[1]`);
+    readonly addToCartButtonLocator = () => this.page.locator(`//button[@data-test="add-to-cart-sauce-labs-backpack"]`);
     readonly genericAddToCartButtonLocator = () => this.page.locator(`//button[text()="Add to cart"]`);
     readonly hamburgerMenuButtonLocator = () => this.page.locator(`//button[@id="react-burger-menu-btn"]`);
-    readonly hamburgerMenu = () => this.page.locator(`//nav[@class="bm-item-list"]`);
-    readonly hamburgerAllItemsButtonLocator = () => this.page.locator(`//a[@id="inventory_sidebar_link"]`);
-    readonly hamburgerAboutButtonLocator = () => this.page.locator(`//a[@id="about_sidebar_link"]`);
-    readonly hamburgerLogoutButtonLocator = () => this.page.locator(`//a[@id="logout_sidebar_link"]`);
-    readonly hamburgerResetAppStateButtonLocator = () => this.page.locator(`//a[@id="reset_sidebar_link"]`);
+    readonly hamburgerMenu = () => this.page.locator(`//a[@data-test="inventory-sidebar-link"]/parent::nav/parent::div`);
+    readonly hamburgerAllItemsButtonLocator = () => this.page.locator(`//a[@data-test="inventory-sidebar-link"]`);
+    readonly hamburgerAboutButtonLocator = () => this.page.locator(`//a[@data-test="about-sidebar-link"]`);
+    readonly hamburgerLogoutButtonLocator = () => this.page.locator(`//a[@data-test="logout-sidebar-link"]`);
+    readonly hamburgerResetAppStateButtonLocator = () => this.page.locator(`//a[@data-test="reset-sidebar-link"]`);
     readonly hamburgerCloseMenuButtonLocator = () => this.page.locator(`//button[@id="react-burger-cross-btn"]`);
     readonly itemFilterButtonLocator = () => this.page.locator(`//select[@data-test="product-sort-container"]`);
     readonly itemImageLocator = () => this.page.locator(`//div[@class="inventory_item_img"]`);
