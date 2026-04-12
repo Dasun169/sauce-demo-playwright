@@ -55,16 +55,19 @@ test.describe('Products Page Validation Tests', { tag: ['@regression', '@product
     });
 
     test('TC_PROD_007 - Should navigate to Facebook from footer', async ({ productsPage }) => {
+        test.setTimeout(150_000);
         logger.info("Starting Test: TC_PROD_007 - Should navigate to Facebook from footer");
         await productsPage.homePageFooterFacebookNavigationValidation();
     });
 
     test('TC_PROD_008 - Should navigate to Twitter from footer', async ({ productsPage }) => {
+        test.setTimeout(150_000);
         logger.info("Starting Test: TC_PROD_008 - Should navigate to Twitter from footer");
         await productsPage.homePageFooterTwitterNavigationValidation();
     });
 
     test('TC_PROD_009 - Should navigate to LinkedIn from footer', async ({ productsPage }) => {
+        test.setTimeout(150_000);
         logger.info("Starting Test: TC_PROD_009 - Should navigate to LinkedIn from footer");
         await productsPage.homePageFooterLinkedInNavigationValidation();
     });
