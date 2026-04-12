@@ -27,7 +27,7 @@ Ensure you have the following installed locally:
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Dasun169/sauce-demo-playwright.git
    cd sauceDemo
    ```
 
