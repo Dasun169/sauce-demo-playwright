@@ -313,7 +313,11 @@ graph TD
 This stage demonstrates the automated build and secure push of the "Golden Image" to the container registry, ensuring all browser dependencies and source snapshots are versioned.
 ![Jenkins Job 1: Infrastructure Deployment](./public/images/docker-image-push-to-aws-ecr.png)
 
-### 🧪 Job 2: Containerized Execution & Result Gathering
+### 🧪 Job 2: Run Tests (Parameterized Execution)
+This job allows for highly flexible test runs by passing parameters for specific test tags (e.g., `@smoke`) and project browsers (e.g., `chromium`).
+![Jenkins: Parameterized Build Selection](./public/images/build-parameter.png)
+
+### 🚀 Containerized Execution & Result Gathering
 The secondary job pulls the specific image tag and spins up a short-lived container to execute the regression suite across configured browser parameters.
 ![Jenkins Job 2: Pull & Execution Flow](./public/images/docker-image-pull-and-run.png)
 
