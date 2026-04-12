@@ -24,6 +24,7 @@ test.describe('Authentication Form Validation Tests', { tag: ['@regression', '@a
     });
 
     test('TC_AUTH_003 - Should login successfully with valid credentials (performanceGlitchUser)', async ({ loginPage, productsPage }) => {
+        test.setTimeout(15000);
         logger.info("Starting Test: TC_AUTH_003 - Should login successfully with valid credentials");
         await loginPage.fillCredentialsAndClickLogin(authData.performanceGlitchUser.userName, authData.performanceGlitchUser.password);
         await loginPage.validateSuccessfulLogin();
