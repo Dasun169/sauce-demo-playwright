@@ -311,23 +311,23 @@ graph TD
 
 ### 🐳 Job 1: Infrastructure Deployment (Push to Registry)
 This stage demonstrates the automated build and secure push of the "Golden Image" to the container registry, ensuring all browser dependencies and source snapshots are versioned.
-![Jenkins Job 1: Infrastructure Deployment](file:///c:/Projects/sauceDemo/public/images/docker-image-push-to-aws-ecr.png)
+![Jenkins Job 1: Infrastructure Deployment](./public/images/docker-image-push-to-aws-ecr.png)
 
 ### 🧪 Job 2: Containerized Execution & Result Gathering
 The secondary job pulls the specific image tag and spins up a short-lived container to execute the regression suite across configured browser parameters.
-![Jenkins Job 2: Pull & Execution Flow](file:///c:/Projects/sauceDemo/public/images/docker-image-pull-and-run.png)
+![Jenkins Job 2: Pull & Execution Flow](./public/images/docker-image-pull-and-run.png)
 
 ### 📄 Persistent Execution Logs (Winston Artifacts)
 Winston logs are streamed from the container back to the Jenkins host agent and archived. This ensures that a complete audit trail of every database interaction and page navigation is available post-run.
-![Jenkins Artifacts: Structured Audit Logs](file:///c:/Projects/sauceDemo/public/images/jenkins-artifact-log-file.png)
+![Jenkins Artifacts: Structured Audit Logs](./public/images/jenkins-artifact-log-file.png)
 
 ### 📊 Allure Reporting: Executive Dashboard
 The Allure dashboard simplifies test result analysis with dynamic graphs, historical trends, and category-based defect classification.
-![Allure Executive Dashboard](file:///c:/Projects/sauceDemo/public/images/allure-report-overview.png)
+![Allure Executive Dashboard](./public/images/allure-report-overview.png)
 
 ### 🐞 Allure Reporting: Granular Debugging & Traceability
 Deep-dive into individual test failures with integrated screenshots, action-by-action steps, and timing metrics to significantly reduce Mean Time to Repair (MTTR).
-![Allure Action-by-Action Debugging](file:///c:/Projects/sauceDemo/public/images/allure-report-pully-overview.png)
+![Allure Action-by-Action Debugging](./public/images/allure-report-pully-overview.png)
 
 ---
 
