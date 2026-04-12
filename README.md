@@ -159,3 +159,9 @@ sauceDemo/
 *   **Accessibility (A11y)**: Integration of `@axe-core/playwright` to automate WCAG compliance checks on every page load.
 *   **Contract Testing**: Implementing API contract validation to ensure the UI remains compatible with evolving backend schemas.
 *   **GitOps/Husky**: Implementing `Husky` pre-commit hooks to run linting and "smoke" tags locally before code pushes to ensure 0% main-branch breakage.
+
+---
+
+### 📚 Additional Documentation
+For a deep dive into the project's technical architecture, comprehensive test case inventory, and CI/CD workflow, please refer to:
+👉 **[PROJECT_DETAILS.md](PROJECT_DETAILS.md)**
