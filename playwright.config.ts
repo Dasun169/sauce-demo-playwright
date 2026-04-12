@@ -11,7 +11,7 @@ export default defineConfig({
   testDir: "./src/tests",
   snapshotDir: './src/utils/screenshots',
   snapshotPathTemplate: '{snapshotDir}/{projectName}/{testFileName}/{arg}{ext}',
-  fullyParallel: false,
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : 1,
@@ -43,6 +43,7 @@ export default defineConfig({
       },
     ],
   ],
+  outputDir: 'reports/test-results',
 
   use: {
     baseURL: process.env.BASE_URL,

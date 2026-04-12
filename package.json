@@ -28,7 +28,7 @@
     "allure:generate": "allure generate reports/allure-report/allure-results --clean -o reports/allure-report/html",
     "allure:open": "allure open reports/allure-report/html",
     "allure:serve": "allure serve reports/allure-report/allure-results",
-    "clean": "rimraf test-results/"
+    "clean": "rimraf reports/test-results/"
   },
   "keywords": [],
   "author": "",
