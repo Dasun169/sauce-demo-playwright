@@ -82,6 +82,14 @@ This project is configured for high-visibility debugging:
     ```bash
     npx playwright show-report
     ```
+*   **Allure Reports**: Advanced visual reporting. Generate and view with:
+    ```bash
+    npm run allure:generate && npm run allure:open
+    ```
+    Or serve in real-time:
+    ```bash
+    npm run allure:serve
+    ```
 *   **Screenshots**: Automatically captured on test failure and stored in `reports/playwright-report/data/`.
 *   **Traces**: Full action-by-action traces are recorded. Open them via the HTML report or `playwright.dev/trace`.
 *   **Videos**: Retained for failed tests in the `test-results/` directory.
@@ -91,17 +99,34 @@ This project is configured for high-visibility debugging:
 ## 📂 Project Structure
 ```text
 sauceDemo/
-├── configs/                # Environment configurations (.env files)
-├── fixtures/               # Playwright custom fixtures for dependency injection
+├── configs/                # Environment configurations
+│   └── .env.stag           # Staging environment variables
+├── fixtures/               # Playwright custom fixtures
+│   └── fixture.ts          # Page object injection & setup
 ├── reports/                # Generated HTML, JSON and Allure reports
 ├── src/
 │   ├── pages/              # Page Object Model (Locators & Actions)
+│   │   ├── LoginPage.ts
+│   │   ├── ProductsPage.ts
+│   │   ├── CartPage.ts
+│   │   └── CheckoutPage.ts
 │   ├── test-data/          # TypeScript-based DDT data files
+│   │   ├── authData.ts
+│   │   ├── checkoutData.ts
+│   │   ├── filterData.ts
+│   │   └── itemData.ts
 │   ├── tests/              # Spec files (Auth, Cart, Checkout, etc.)
+│   │   ├── auth.spec.ts
+│   │   ├── cart.spec.ts
+│   │   ├── checkout.spec.ts
+│   │   ├── products.spec.ts
+│   │   ├── network.spec.ts
+│   │   ├── cross-browser.spec.ts
+│   │   └── advanced-strategies.spec.ts
 │   └── utils/              
 │       ├── images/         # Storage for Visual baseline snapshots
 │       └── Logger.ts       # Custom logging utility
-├── playwright.config.ts    # Main Playwright configuration (includes Snapshot settings)
+├── playwright.config.ts    # Main Playwright configuration
 └── Dockerfile              # Containerization setup for CI/CD
 ```
 
@@ -118,13 +143,15 @@ sauceDemo/
 **Current Limitations (Strategic Debt):**
 *   **Environment Dependency**: The suite currently targets the production demo environment directly. To maximize CI/CD stability, the next phase would move to **Mocked Service Workers (MSW)** to decouple tests from external uptime.
 *   **Database Siloed**: Validation is currently restricted to the DOM. Integration of direct Database/API state verification is omitted due to the static nature of SauceDemo.
+*   **Auth Handshake Latency**: Implementing Playwright `storageState` to bypass repetitive login flows.
 
 ---
 
 ## 🐞 Critical Observations (Bugs & Quirks)
 1.  **Form Input Hygiene**: The "Postal Code" field lacks a regex restriction (accepts non-alphanumeric symbols). This was flagged as a **Medium Severity Bug** regarding data integrity.
-2.  **Visual Asset Fragility**: "Problem User" state results in swapped image assets. This is verified via network interception but suggests a need for **Visual Comparison** logic.
-3.  **UI Race Conditions**: On mobile viewports, the side-menu animation causes intermittent "Element Not Interactable" errors. I resolved this using **explicit web-first assertions** rather than static timeouts.
+2.  **Cart State Leakage**: Logout doesn't reliably clear local session data in the demo app; explicitly clearing `localStorage` between tests is a required workaround.
+3.  **Visual Asset Fragility**: "Problem User" state results in swapped image assets. This is verified via network interception but suggests a need for **Visual Comparison** logic.
+4.  **Performance Glitch Profile**: The `performance_glitch_user` forces a 5s API hang, requiring specific timeout handling to prevent false negatives.
 
 ---
 
