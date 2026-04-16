@@ -2,8 +2,14 @@ import { defineConfig, devices } from "@playwright/test";
 import dotenv from 'dotenv';
 import path from 'path';
 
+const ENV = process.env.ENV || 'stag';
+
+if (!process.env.TEST_WORKER_INDEX) {
+  console.log(`\n🚀 RUNNING ON ENVIRONMENT: ${ENV.toUpperCase()} 🚀\n`);
+}
+
 dotenv.config({
-  path: path.resolve(__dirname, 'configs/.env.stag'),
+  path: path.resolve(__dirname, `configs/.env.${ENV}`),
   quiet: true,
 });
 
