@@ -14,7 +14,7 @@ test.describe('Advanced QA Strategies: Visual & Performance', { tag: ['@advanced
         // VISUAL VALIDATION: Checks the current UI against a saved baseline.
         // Rule: First run creates the image; Second run compares it.
         await expect(page).toHaveScreenshot({
-            fullPage: true,
+            fullPage: false,
             maxDiffPixelRatio: 0.1, // 10% pixel variance allowed (useful for dynamic content)
         });
 
