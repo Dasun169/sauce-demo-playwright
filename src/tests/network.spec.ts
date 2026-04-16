@@ -21,7 +21,10 @@ test.describe('Network & API Handling Tests', { tag: ['@regression', '@network']
         await page.route('**/*.{png,jpg,jpeg,svg}', route => route.abort());
 
         // Reload the page to see the effect
-        await page.reload();
+        await page.reload({ waitUntil: 'networkidle' });
+
+        // Add a small buffer for the browser to render the "broken" state
+        await page.waitForTimeout(1000);
 
         // Validate that images are broken (naturalWidth is 0)
         const isImageBroken = await productsPage.itemImageLocator().first().locator('img').evaluate((img: HTMLImageElement) => {
@@ -46,10 +49,10 @@ test.describe('Network & API Handling Tests', { tag: ['@regression', '@network']
 
         // Trigger navigation to the blocked URL
         await page.goto('https://www.saucedemo.com/inventory.html', { waitUntil: 'commit' });
-        
+
         const bodyText = await page.locator('body').textContent();
         expect(bodyText).toContain('Internal Server Error Simulated');
-        
+
         logger.info("Verified UI displays the mocked 500 error message.");
     });
 
@@ -69,11 +72,11 @@ test.describe('Network & API Handling Tests', { tag: ['@regression', '@network']
         });
 
         await page.reload();
-        
+
         // Verify the injected style is applied
         const bgColor = await page.locator('.header_secondary_container').evaluate(el => getComputedStyle(el).backgroundColor);
         expect(bgColor).toBe('rgb(255, 0, 0)');
-        
+
         logger.info("UI appearance successfully modified via CSS interception and validated.");
     });
 });
