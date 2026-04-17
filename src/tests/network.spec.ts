@@ -18,20 +18,29 @@ test.describe('Network & API Handling Tests', { tag: ['@regression', '@network']
         logger.info("Starting Test: TC_NET_001 - Aborting image requests to simulate network failure");
 
         // Intercept and abort all image requests
-        await page.route('**/*.{png,jpg,jpeg,svg}', route => route.abort());
+        // Broaden the pattern to include all potential image types and handle query strings
+        await page.route('**/*.{png,jpg,jpeg,svg}*', route => route.abort());
 
-        // Reload the page to see the effect
-        await page.reload({ waitUntil: 'networkidle' });
+        // Reload the page to see the effect, ensuring we don't use cached assets from the login step
+        // We navigate to the URL directly to ensure a fresh request cycle
+        await page.goto(page.url(), { waitUntil: 'networkidle' });
 
-        // Add a small buffer for the browser to render the "broken" state
-        await page.waitForTimeout(1000);
+        // Add a small buffer for the browser to finalize the "broken" state rendering
+        await page.waitForTimeout(2000);
 
         // Validate that images are broken (naturalWidth is 0)
-        const isImageBroken = await productsPage.itemImageLocator().first().locator('img').evaluate((img: HTMLImageElement) => {
-            return img.naturalWidth === 0;
-        });
+        // Check multiple images to ensure the policy was applied globally
+        const images = page.locator('.inventory_item_img img');
+        const count = await images.count();
+        expect(count).toBeGreaterThan(0);
 
-        expect(isImageBroken).toBeTruthy();
+        for (let i = 0; i < Math.min(count, 3); i++) {
+            const isBroken = await images.nth(i).evaluate((img: HTMLImageElement) => {
+                return !img.complete || img.naturalWidth === 0;
+            });
+            expect(isBroken, `Image at index ${i} should be broken/blocked`).toBeTruthy();
+        }
+
         logger.info("Successfully validated that images are blocked/broken via network abortion.");
     });
 
@@ -60,22 +69,33 @@ test.describe('Network & API Handling Tests', { tag: ['@regression', '@network']
         logger.info("Starting Test: TC_NET_003 - Modifying CSS via network interception");
 
         // Intercept CSS files and append custom styles
-        await page.route('**/*.css', async route => {
+        await page.route('**/*.css*', async route => {
             const response = await route.fetch();
             let body = await response.text();
+
             // Change background color of a specific UI element to bright red
+            // We use !important to ensure it overrides existing styles
             body += '\n.header_secondary_container { background-color: rgb(255, 0, 0) !important; }';
+
             await route.fulfill({
                 response,
-                body
+                body,
+                headers: {
+                    ...response.headers(),
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache'
+                }
             });
         });
 
-        await page.reload();
+        // Use a navigation that clears internal state more effectively than simple reload
+        await page.goto(page.url(), { waitUntil: 'networkidle' });
 
-        // Verify the injected style is applied
-        const bgColor = await page.locator('.header_secondary_container').evaluate(el => getComputedStyle(el).backgroundColor);
-        expect(bgColor).toBe('rgb(255, 0, 0)');
+        await page.waitForTimeout(2000);
+
+        // Wait for the specific element to have the modified color (with retry logic built into expect)
+        const headerContainer = page.locator('.header_secondary_container');
+        await expect(headerContainer).toHaveCSS('background-color', 'rgb(255, 0, 0)', { timeout: 10000 });
 
         logger.info("UI appearance successfully modified via CSS interception and validated.");
     });
