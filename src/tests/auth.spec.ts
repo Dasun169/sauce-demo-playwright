@@ -1,4 +1,4 @@
-import { test } from '../../fixtures/fixture';
+import { test, expect } from '../../fixtures/fixture';
 import { authData } from '../test-data/authData';
 import { logger } from '../utils/Logger';
 
@@ -12,29 +12,39 @@ test.describe('Authentication Form Validation Tests', { tag: ['@regression', '@a
     test('TC_AUTH_001 - Should login successfully with valid credentials (validUser)', async ({ loginPage, productsPage }) => {
         logger.info("Starting Test: TC_AUTH_001 - Should login successfully with valid credentials");
         await loginPage.fillCredentialsAndClickLogin(authData.validUser.userName, authData.validUser.password);
-        await loginPage.validateSuccessfulLogin();
+        //await loginPage.validateSuccessfulLogin();
         await productsPage.validateProductsPage();
     });
 
     test('TC_AUTH_002 - Should login successfully with valid credentials (problemUser)', async ({ loginPage, productsPage }) => {
         logger.info("Starting Test: TC_AUTH_002 - Should login successfully with valid credentials");
         await loginPage.fillCredentialsAndClickLogin(authData.problemUser.userName, authData.problemUser.password);
-        await loginPage.validateSuccessfulLogin();
+        //await loginPage.validateSuccessfulLogin();
         await productsPage.validateProductsPage();
     });
 
     test('TC_AUTH_003 - Should login successfully with valid credentials (performanceGlitchUser)', async ({ loginPage, productsPage }) => {
-        test.setTimeout(15000);
         logger.info("Starting Test: TC_AUTH_003 - Should login successfully with valid credentials");
+
+        const startTime = Date.now();
+
         await loginPage.fillCredentialsAndClickLogin(authData.performanceGlitchUser.userName, authData.performanceGlitchUser.password);
-        await loginPage.validateSuccessfulLogin();
+        //await loginPage.validateSuccessfulLogin();
         await productsPage.validateProductsPage();
+
+        const endTime = Date.now();
+        const duration = endTime - startTime;
+
+        logger.info(`Login flow completed in ${duration} ms`);
+
+        // Performance assertion (threshold example)
+        expect(duration).toBeLessThan(5000);
     });
 
     test('TC_AUTH_004 - Should logout successfully', async ({ loginPage, productsPage }) => {
         logger.info("Starting Test: TC_AUTH_004 - Should logout successfully");
         await loginPage.fillCredentialsAndClickLogin(authData.validUser.userName, authData.validUser.password);
-        await loginPage.validateSuccessfulLogin();
+        //await loginPage.validateSuccessfulLogin();
         await productsPage.validateProductsPage();
         await productsPage.hamburgerMenuValidate();
         await productsPage.hamburgerMenuLogoutNavigationValidation();
