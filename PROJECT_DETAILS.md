@@ -33,6 +33,8 @@ sauce-demo-playwright/
 │
 ├── configs/
 │   └── .env.stag                 # Environment variables (BASE_URL, credentials)
+|   └── .env.qa
+|   └── .env.prod  
 │
 ├── fixtures/
 │   └── fixture.ts                # Custom Playwright fixtures (page objects, auth state)
